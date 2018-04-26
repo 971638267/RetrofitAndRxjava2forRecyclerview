@@ -42,14 +42,16 @@
         <activity android:name=".activity.RecycleviewActivity" />
         <activity android:name=".activity.SlideMenuActivity" />
         <activity android:name=".activity.RecycleviewWithHeadActivity" />
+        <activity android:name=".activity.GyRecycleviewActivity" />
 
-        <activity android:name=".activity.SplashActivity" >
+        <activity android:name=".activity.SplashActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name="com.gan.appdownload.DownLoadBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

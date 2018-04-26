@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by gan on 2017/5/9.
  */
 
-public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements MyRecycleView.RefreshLoadMoreListener{
+public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements MyRecycleView.RefreshLoadMoreListener {
     @Override
     protected void afterView() {
         ButterKnife.bind(this);
@@ -29,22 +29,24 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
 
     @BindView(R.id.pager_base_recycleview)
     MyRecycleView recycleView;
-    private boolean isFirstIn=true;
+    private boolean isFirstIn = true;
     private int page = 1;
     private int PAGESIZE = 10;
-    private int oldPage=1;
+    private int oldPage = 1;
     private CommonAdapter<T> mAdapter;
     private RecycleviewSubscriberOnNextListener<List<T>> getTopMovieOnNext;
     public List<T> dataAllList = new ArrayList<T>();
     private RecycleviewSubscriber<List<T>> subscriber;
 
     private void initView() {
-        mAdapter =getRecyclerViewAdapter();;//初始化适配器
+        mAdapter = getRecyclerViewAdapter();
+        ;//初始化适配器
         recycleView.setRefreshLoadMoreListener(this);//下拉上拉加载更多监听
-        if (!setRecyclerViewField()){
+        if (!setRecyclerViewField()) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recycleView.setLayoutManager(layoutManager);
-        };
+        }
+        ;
         recycleView.setAdapter(mAdapter);
         initNetListener();
     }
@@ -57,18 +59,18 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
     /**
      * 初始化适配器
      */
-    public CommonAdapter<T> getRecyclerViewAdapter(){
-        return new CommonAdapter<T>(this,getItemLayoutId(), dataAllList) {
+    public CommonAdapter<T> getRecyclerViewAdapter() {
+        return new CommonAdapter<T>(this, getItemLayoutId(), dataAllList) {
             @Override
             protected void convert(ViewHolder holder, T t, int position) {
-                doItemUI(holder,t,position);
+                doItemUI(holder, t, position);
             }
         };
     }
 
-   public void freshItem(){
-       recycleView.notifyDataSetChanged();
-   }
+    public void freshItem() {
+        recycleView.notifyDataSetChanged();
+    }
 
     protected abstract int getItemLayoutId();
 
@@ -89,17 +91,18 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
 
     @Override
     public void onRefresh() {
-        oldPage=page;
+        oldPage = page;
         page = 1;
-        subscriber=new RecycleviewSubscriber<List<T>>(getTopMovieOnNext,recycleView,R.drawable.icon_nonet,R.drawable.icon_err);
-        BaseRequest4List request=getNetRequest();
-        request.setStart((page-1)*PAGESIZE);
+        subscriber = new RecycleviewSubscriber<List<T>>(getTopMovieOnNext, R.drawable.icon_nonet, R.drawable.icon_err);
+        BaseRequest4List request = getNetRequest();
+        request.setStart((page - 1) * PAGESIZE);
         request.setCount(PAGESIZE);
-        getNetData(subscriber,request);
+        getNetData(subscriber, request);
     }
 
     /**
      * 写网络请求接口
+     *
      * @param subscriber
      * @param request
      */
@@ -107,6 +110,7 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
 
     /**
      * 网络请求体requset
+     *
      * @return
      */
     protected abstract BaseRequest4List getNetRequest();
@@ -114,11 +118,11 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
     @Override
     public void onLoadMore() {
         page++;
-        subscriber=new RecycleviewSubscriber<List<T>>(getTopMovieOnNext,recycleView,R.drawable.icon_nonet,R.drawable.icon_err);
-        BaseRequest4List request=getNetRequest();
-        request.setStart((page-1)*PAGESIZE);
+        subscriber = new RecycleviewSubscriber<List<T>>(getTopMovieOnNext, R.drawable.icon_nonet, R.drawable.icon_err);
+        BaseRequest4List request = getNetRequest();
+        request.setStart((page - 1) * PAGESIZE);
         request.setCount(PAGESIZE);
-        getNetData(subscriber,request);
+        getNetData(subscriber, request);
     }
 
     private void initNetListener() {
@@ -126,26 +130,26 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
         getTopMovieOnNext = new RecycleviewSubscriberOnNextListener<List<T>>() {
             @Override
             public void onNext(List<T> subjects) {
-                if(page==1){
-                    recycleView.setDateRefresh(dataAllList, subjects,getNoDataDrawable(),getNoDataString());
-                    ToastUtil.ToastCenter( "刷新完成");
-                }else{
+                if (page == 1) {
+                    recycleView.setDateRefresh(dataAllList, subjects, getNoDataDrawable(), getNoDataString());
+                    ToastUtil.ToastCenter("刷新完成");
+                } else {
                     recycleView.setDateLoadMore(dataAllList, subjects);
                 }
             }
 
             @Override
             public void onErr(int drawable, String msg) {
-                if (page==1){
-                    if (dataAllList.isEmpty())
-                        recycleView.setDateRefreshErr(drawable,msg);//显示错误面板
-                    else{
-                        ToastUtil.ToastCenter( msg);//提示信息
+                if (page == 1) {
+                    if (dataAllList.isEmpty()) {
+                        recycleView.setDateRefreshErr(drawable, msg);//显示错误面板
+                    } else {
+                        ToastUtil.ToastCenter(msg);//提示信息
                         recycleView.stopRefresh();//停止刷新
-                        page=oldPage;//恢复当前页记录
+                        page = oldPage;//恢复当前页记录
                     }
                     return;
-                }else{
+                } else {
                     page--;//当前页恢复记录数据
                     ToastUtil.ToastCenter(msg);//提示错误
                     recycleView.setLoadMoreCompleted();//停止加载
@@ -157,19 +161,21 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
 
     /**
      * 没数据时的提示信息
+     *
      * @return
      */
     protected abstract String getNoDataString();
 
     /**
      * 没数据时的提示图片
+     *
      * @return
      */
     protected abstract int getNoDataDrawable();
 
     @Override
     public void onDestroy() {
-        if (subscriber!=null){
+        if (subscriber != null) {
             subscriber.onActivityDestroy();
         }
         super.onDestroy();

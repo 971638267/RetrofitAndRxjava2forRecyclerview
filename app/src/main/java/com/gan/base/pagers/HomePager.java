@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.gan.base.activity.GyRecycleviewActivity;
 import com.gan.base.activity.RecycleviewActivity;
 import com.gan.base.activity.RecycleviewWithHeadActivity;
 import com.gan.base.activity.RxBusActivity;
@@ -92,16 +93,17 @@ public class HomePager extends ContentBasePager {
             imageint[i] = R.drawable.icon_network;
         }
         String[] griditemtext = new String[15];
-        griditemtext[0]="二维码扫描";
-        griditemtext[1]="基本页面";
-        griditemtext[2]="Tab页面";
-        griditemtext[3]="网络请求";
-        griditemtext[4]="图片选择";
-        griditemtext[5]="RxBus";
-        griditemtext[6]="封装列表页";
-        griditemtext[7]="侧拉框demo";
-        griditemtext[8]="带有头布局的列表";
-        for (int i = 9; i < 15; i++) {
+        griditemtext[0] = "二维码扫描";
+        griditemtext[1] = "基本页面";
+        griditemtext[2] = "Tab页面";
+        griditemtext[3] = "网络请求";
+        griditemtext[4] = "图片选择";
+        griditemtext[5] = "RxBus";
+        griditemtext[6] = "封装列表页";
+        griditemtext[7] = "侧拉框demo";
+        griditemtext[8] = "带有头布局的列表";
+        griditemtext[9] = "另外一种下拉刷新控件";
+        for (int i = 10; i < 15; i++) {
             griditemtext[i] = "功能" + (i + 1);
         }
 
@@ -124,7 +126,7 @@ public class HomePager extends ContentBasePager {
                 Intent it;
                 switch (position) {
                     case 0://扫描功能
-                        mActivity.startActivityForResult(new Intent(mActivity, CaptureZxingActivity.class),200);
+                        mActivity.startActivityForResult(new Intent(mActivity, CaptureZxingActivity.class), 200);
                         break;
                     case 1://
                         mActivity.startActivity(new Intent(mActivity, TestActivity.class));
@@ -139,19 +141,21 @@ public class HomePager extends ContentBasePager {
                         mActivity.startActivity(new Intent(mActivity, PhotoPickActivity.class));
                         break;
                     case 5://
-                        mActivity.startActivity(new Intent(mActivity,RxBusActivity.class));
+                        mActivity.startActivity(new Intent(mActivity, RxBusActivity.class));
                         break;
                     case 6://
-                        mActivity.startActivity(new Intent(mActivity,RecycleviewActivity.class));
+                        mActivity.startActivity(new Intent(mActivity, RecycleviewActivity.class));
 
                         break;
                     case 7://
-                        mActivity.startActivity(new Intent(mActivity,SlideMenuActivity.class));
+                        mActivity.startActivity(new Intent(mActivity, SlideMenuActivity.class));
                         break;
                     case 8://
-                        mActivity.startActivity(new Intent(mActivity,RecycleviewWithHeadActivity.class));
+                        mActivity.startActivity(new Intent(mActivity, RecycleviewWithHeadActivity.class));
                         break;
-
+                    case 9://
+                        mActivity.startActivity(new Intent(mActivity, GyRecycleviewActivity.class));
+                        break;
                     default:
                         break;
                 }
@@ -186,8 +190,8 @@ public class HomePager extends ContentBasePager {
             d.setImage(urls[i]);
             d.setTitle("测试title" + i);
             d.setId(i);
-            if (i%2==0)
-            d.setUrl("http://blog.csdn.net/u012402940/article/details/64439417");
+            if (i % 2 == 0)
+                d.setUrl("http://blog.csdn.net/u012402940/article/details/64439417");
             else
                 d.setUrl("http://blog.csdn.net/u012402940/article/category/6226042");
             bannerList.add(d);
@@ -198,7 +202,7 @@ public class HomePager extends ContentBasePager {
             @Override
             public void onImageClick(int position, View imageView) {
                 // 单击图片处理事件
-                mActivity.startActivity(new Intent(mActivity, BaseWebViewActivity.class).putExtra("title",bannerList.get(position).getTitle()).putExtra("url",bannerList.get(position).getUrl()));
+                mActivity.startActivity(new Intent(mActivity, BaseWebViewActivity.class).putExtra("title", bannerList.get(position).getTitle()).putExtra("url", bannerList.get(position).getUrl()));
             }
 
             @Override
@@ -245,7 +249,7 @@ public class HomePager extends ContentBasePager {
             // 高度计算
 
             int heigt1 = mGv.getMeasuredWidth() / mGv.getNumColumns();
-            int heigt2 = (mGv.getMeasuredHeight() - DensityUtils.dp2px(mActivity, 1) * (mGv.getNumColumns()-1)) / mGv.getNumColumns();
+            int heigt2 = (mGv.getMeasuredHeight() - DensityUtils.dp2px(mActivity, 1) * (mGv.getNumColumns() - 1)) / mGv.getNumColumns();
             int heigt = 0;
             if (heigt1 >= heigt2) {
                 if (heigt1 > heigt2 * 6 / 5) {
@@ -286,7 +290,6 @@ public class HomePager extends ContentBasePager {
         }
 
     }
-
 
 
 }

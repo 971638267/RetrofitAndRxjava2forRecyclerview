@@ -1,16 +1,15 @@
-package com.gan.base.pagers;
+package com.gan.base.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.gan.myrecycleview.CommonAdapter;
-import com.gan.myrecycleview.MyRecycleView;
-import com.gan.myrecycleview.base.ViewHolder;
 import com.gan.base.R;
 import com.gan.base.net.requestbean.BaseRequest4List;
 import com.gan.base.net.subscribers.RecycleviewSubscriber;
 import com.gan.base.net.subscribers.RecycleviewSubscriberOnNextListener;
 import com.gan.base.util.ToastUtil;
+import com.gan.gyrecyclerview.CommonAdapter;
+import com.gan.gyrecyclerview.GyRecycleView;
+import com.gan.gyrecyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +19,16 @@ import butterknife.ButterKnife;
 
 /**
  * Created by gan on 2017/5/9.
- * 拥有recycleview的Pager基类
  */
 
-public abstract class BaseRecycleviewPager<T> extends ContentBasePager implements MyRecycleView.RefreshLoadMoreListener {
+public abstract class BaseGyRecycleviewActivity<T> extends BaseActivity implements GyRecycleView.RefreshLoadMoreListener {
+    @Override
+    protected void afterView() {
+        ButterKnife.bind(this);
+    }
+
     @BindView(R.id.pager_base_recycleview)
-    MyRecycleView recycleView;
+    GyRecycleView recycleView;
     private boolean isFirstIn = true;
     private int page = 1;
     private int PAGESIZE = 10;
@@ -35,28 +38,15 @@ public abstract class BaseRecycleviewPager<T> extends ContentBasePager implement
     public List<T> dataAllList = new ArrayList<T>();
     private RecycleviewSubscriber<List<T>> subscriber;
 
-    public BaseRecycleviewPager(AppCompatActivity activity) {
-        super(activity);
-        ButterKnife.bind(this, mRootView);
-    }
-
     private void initView() {
-
         mAdapter = getRecyclerViewAdapter();
         ;//初始化适配器
         recycleView.setRefreshLoadMoreListener(this);//下拉上拉加载更多监听
         if (!setRecyclerViewField()) {
-            //recycleView.setPullRefreshEnable(false);//禁用刷新
-            //recycleView.setCanMore(false);//禁用加载更多用在setAdapter（）之前
-            //recycleView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-            //设置布局管理
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
-            //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            // GridLayoutManager layoutManager= new GridLayoutManager(mActivity, 2);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recycleView.setLayoutManager(layoutManager);
         }
         ;
-
         recycleView.setAdapter(mAdapter);
         initNetListener();
     }
@@ -70,7 +60,7 @@ public abstract class BaseRecycleviewPager<T> extends ContentBasePager implement
      * 初始化适配器
      */
     public CommonAdapter<T> getRecyclerViewAdapter() {
-        return new CommonAdapter<T>(mActivity, getItemLayoutId(), dataAllList) {
+        return new CommonAdapter<T>(this, getItemLayoutId(), dataAllList) {
             @Override
             protected void convert(ViewHolder holder, T t, int position) {
                 doItemUI(holder, t, position);
@@ -78,24 +68,25 @@ public abstract class BaseRecycleviewPager<T> extends ContentBasePager implement
         };
     }
 
+    public void freshItem() {
+        recycleView.notifyDataSetChanged();
+    }
+
     protected abstract int getItemLayoutId();
 
     protected abstract void doItemUI(ViewHolder viewHolder, T t, int position);
 
+    /**
+     * 首次进入刷新
+     */
     @Override
-    public void initData() {
-        // 第一次进入自动刷新
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
         if (isFirstIn) {
             initView();
             recycleView.firstLoadingView("数据加载中");
             isFirstIn = false;
         }
-
-    }
-
-    @Override
-    public void outData() {
-
     }
 
     @Override
@@ -192,6 +183,7 @@ public abstract class BaseRecycleviewPager<T> extends ContentBasePager implement
 
     @Override
     public int getContentView() {
-        return R.layout.pager_base_recycleview;
+        return R.layout.pager_base_gyrecycleview;
     }
+
 }
