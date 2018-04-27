@@ -57,4 +57,5 @@ dependencies {
     compile files('libs/zxing.jar')
     compile project(':appdownloadlibrary')
     compile files('libs/nineoldandroids-2.4.0.jar')
+    compile project(':gyrecyclerview')
 }

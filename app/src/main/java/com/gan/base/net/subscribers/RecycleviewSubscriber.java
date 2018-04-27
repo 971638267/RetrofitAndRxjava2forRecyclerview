@@ -24,8 +24,6 @@ import retrofit2.HttpException;
  * @param <T>
  */
 public class RecycleviewSubscriber<T> implements Subscriber<T> {
-
-    private final MyRecycleView recycleView;
     private final int noNet;
     private final int onErr;
     private RecycleviewSubscriberOnNextListener mSubscriberOnNextListener;
@@ -33,13 +31,11 @@ public class RecycleviewSubscriber<T> implements Subscriber<T> {
 
     /**
      * @param mSubscriberOnNextListener
-     * @param recycleView
      * @param onErr                     出现异常时图片
      * @param noNet                     //无网络时的图片
      */
-    public RecycleviewSubscriber(RecycleviewSubscriberOnNextListener mSubscriberOnNextListener, MyRecycleView recycleView, int noNet, int onErr) {
+    public RecycleviewSubscriber(RecycleviewSubscriberOnNextListener mSubscriberOnNextListener, int noNet, int onErr) {
         this.mSubscriberOnNextListener = mSubscriberOnNextListener;
-        this.recycleView = recycleView;
         this.onErr = onErr;
         this.noNet = noNet;
     }

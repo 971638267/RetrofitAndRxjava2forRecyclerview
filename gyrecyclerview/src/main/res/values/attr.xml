@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="GyRecyclerview">
+        <attr name="defalt_err_icon" format="reference" />
+        <attr name="defalt_nodata_icon" format="reference" />
+    </declare-styleable>
+</resources>

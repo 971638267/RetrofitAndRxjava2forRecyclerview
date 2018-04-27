@@ -1,2 +1,4 @@
 # RetrofitAndRxjava2forRecyclerview
 rxjava2与retrofit 搭建网络框架
+基于recyclerview的下拉刷新上拉自动加载更多的控件的封装
+使用方法见demo
