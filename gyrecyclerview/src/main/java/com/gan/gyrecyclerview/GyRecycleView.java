@@ -65,7 +65,8 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
     private int headViewId;
     private View headView;
     private View errInnerView;
-    private TextView clickUpdateHintTv;
+    private int nodataMoreMode = NodataFootViewMode.ALWAYS_VISIBLE;
+    ;
 
     public GyRecycleView(Context context) {
         super(context);
@@ -131,6 +132,7 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
         super(context, attrs, defStyleAttr);
     }
 
+
     public boolean isRefreshOrLoadmore() {
         return isRefresh || isLoadMore;
     }
@@ -147,7 +149,6 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
             errInnerView = (LinearLayout) View.inflate(context, R.layout.gyrecyclerview_err, null);
             exceptIv = (ImageView) errInnerView.findViewById(R.id.iv_err_img);
             exceptTv = (TextView) errInnerView.findViewById(R.id.tv_err_msg);
-            clickUpdateHintTv = (TextView) errInnerView.findViewById(R.id.tv_err_hint);
             tmp.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -224,7 +225,7 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
             this.mAdapter = adapter;
             if (canMore) {//是否可以加载更多
                 mLoadMoreWrapper = new LoadMoreWrapper(mAdapter);
-                // mLoadMoreWrapper.setLoadMoreView(false);//是否有加载更多默认有
+                //mLoadMoreWrapper.setLoadMoreView(canMore);//是否有加载更多默认有
                 mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
                     @Override
                     public void onLoadMoreRequested() {
@@ -488,6 +489,34 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
     }
 
     /**
+     * 添加下拉刷新头布局
+     *
+     * @param view
+     * @return
+     */
+    public View setPullHeaderView(View view) {
+        if (headView == null && view == null) {
+            headView = new DefaltHeadForGyRecycerView(getContext());
+        } else {
+            headView = view;
+        }
+        mPtrFrame.setHeaderView(headView);
+        if (headView instanceof PtrUIHandler) {
+            //如果头部实现了PtrUIHandler，则添加到PtrUIHandler组中，使头部也响应状态控制
+            mPtrFrame.addPtrUIHandler((PtrUIHandler) headView);
+        }
+        return headView;
+    }
+
+    public void setFootNodataViewMode(int mode) {
+        this.nodataMoreMode = mode;
+    }
+
+    public RecyclerView getInnerRecyclerView() {
+        return recyclerView;
+    }
+
+    /**
      * 下拉刷新和自动加载监听
      */
     public interface RefreshLoadMoreListener {
@@ -501,9 +530,25 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
     }
 
     public interface ItemClickListener {
-        public void onClick(View view, RecyclerView.ViewHolder holder, int position);
+        void onClick(View view, RecyclerView.ViewHolder holder, int position);
 
-        public void onLongClick(View view, RecyclerView.ViewHolder holder, int position);
+        void onLongClick(View view, RecyclerView.ViewHolder holder, int position);
     }
 
+    public class NodataFootViewMode {
+        /**
+         * 当所有数据全部展示时，显示没有更多数据尾部布局提示
+         */
+        public static final int ALWAYS_VISIBLE = 0;
+
+        /**
+         * 当所有数据全部展示时，不满一屏不显示没有更多数据尾部布局提示,满一屏时显示
+         */
+        public static final int OUT_VISIBLE = 1;
+
+        /**
+         * 当所有数据全部展示时，不显示没有更多数据尾部布局提示
+         */
+        public static final int HIDDEN = 2;
+    }
 }

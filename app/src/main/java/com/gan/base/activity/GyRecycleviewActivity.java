@@ -10,6 +10,7 @@ import com.gan.base.net.requestbean.BaseRequest4List;
 import com.gan.base.net.requestbean.MovieInfo;
 import com.gan.base.net.subscribers.RecycleviewSubscriber;
 import com.gan.base.util.StringFormatUtil;
+import com.gan.base.view.GyPullHeadView;
 import com.gan.gyrecyclerview.GyRecycleView;
 import com.gan.gyrecyclerview.base.ViewHolder;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,7 +23,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class GyRecycleviewActivity extends BaseGyRecycleviewActivity<MovieInfo> {
     @Override
     public boolean setRecyclerViewField() {
-        setTitle("另外一种空间的下拉刷新列表页");
+        setTitle("另外一种控件的下拉刷新列表页");
+        recycleView.setPullHeaderView(new GyPullHeadView(this));
+        recycleView.setFootNodataViewMode(GyRecycleView.NodataFootViewMode.OUT_VISIBLE);
+        recycleView.addHeaderView(R.layout.item_recyclerview_head);
+        //recycleView.getInnerRecyclerView();
         recycleView.setOnItemClickListener(new GyRecycleView.ItemClickListener() {
             @Override
             public void onClick(View view, RecyclerView.ViewHolder holder, int position) {
