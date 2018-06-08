@@ -132,7 +132,7 @@ public class MyRecycleView<T> extends LinearLayout {
             @Override
             public void onClick(View v) {
                 // 点击图片刷新
-                if (!isRefresh) {
+                if (!isRefresh && isCanRefresh) {
                     swipeRfl.setRefreshing(true);
                     isRefresh = true;
                     refresh();

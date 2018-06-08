@@ -156,7 +156,7 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
                     // 点击刷新
                     if (!isRefresh) {
                         // 点击图片刷新
-                        if (!isRefresh) {
+                        if (isCanRefresh) {
                             firstLoadingView(null);
                         }
                     }

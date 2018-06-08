@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 import com.gan.base.activity.GyRecycleviewActivity;
+import com.gan.base.activity.PhotoPickerDemoActivity;
 import com.gan.base.activity.RecycleviewActivity;
 import com.gan.base.activity.RecycleviewWithHeadActivity;
 import com.gan.base.activity.RxBusActivity;
@@ -103,7 +104,8 @@ public class HomePager extends ContentBasePager {
         griditemtext[7] = "侧拉框demo";
         griditemtext[8] = "带有头布局的列表";
         griditemtext[9] = "另外一种下拉刷新控件";
-        for (int i = 10; i < 15; i++) {
+        griditemtext[10] = "图片选择器";
+        for (int i = 11; i < 15; i++) {
             griditemtext[i] = "功能" + (i + 1);
         }
 
@@ -155,6 +157,9 @@ public class HomePager extends ContentBasePager {
                         break;
                     case 9://
                         mActivity.startActivity(new Intent(mActivity, GyRecycleviewActivity.class));
+                        break;
+                    case 10://
+                        mActivity.startActivity(new Intent(mActivity, PhotoPickerDemoActivity.class));
                         break;
                     default:
                         break;
