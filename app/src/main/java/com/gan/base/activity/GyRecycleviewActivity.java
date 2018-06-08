@@ -27,7 +27,10 @@ public class GyRecycleviewActivity extends BaseGyRecycleviewActivity<MovieInfo> 
         recycleView.setPullHeaderView(new GyPullHeadView(this));
         recycleView.setFootNodataViewMode(GyRecycleView.NodataFootViewMode.OUT_VISIBLE);
         recycleView.addHeaderView(R.layout.item_recyclerview_head);
+        recycleView.setRefreshMode(GyRecycleView.RefreshMode.PULL);
         //recycleView.getInnerRecyclerView();
+        recycleView.setExceptionView(View.inflate(this,R.layout.layout_exception_view,null),R.id.iv,R.id.tv);
+        //recycleView.setExceptionView(View.inflate(this,R.layout.layout_exception_view,null));
         recycleView.setOnItemClickListener(new GyRecycleView.ItemClickListener() {
             @Override
             public void onClick(View view, RecyclerView.ViewHolder holder, int position) {

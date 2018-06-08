@@ -66,6 +66,7 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
     private View headView;
     private View errInnerView;
     private int nodataMoreMode = NodataFootViewMode.ALWAYS_VISIBLE;
+    private int refreshMode = RefreshMode.ALL;
     ;
 
     public GyRecycleView(Context context) {
@@ -156,7 +157,7 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
                     // 点击刷新
                     if (!isRefresh) {
                         // 点击图片刷新
-                        if (isCanRefresh) {
+                        if (refreshMode != RefreshMode.PULL && isCanRefresh) {
                             firstLoadingView(null);
                         }
                     }
@@ -197,9 +198,18 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
         recyclerView.setVisibility(View.INVISIBLE);
         mExceptView.setVisibility(View.VISIBLE);
         mLoadingView.setVisibility(View.INVISIBLE);
-        exceptIv.setImageResource(drawableId);
-        exceptTv.setText(exceptStr);
-        mPtrFrame.setEnabled(false);//出现错误之后，将设定无法下拉，运用点击图片进行刷新
+        if (exceptIv != null) {
+            exceptIv.setImageResource(drawableId);
+        }
+        if (exceptTv != null) {
+            exceptTv.setText(exceptStr);
+        }
+        //出现错误之后，将设定无法下拉，运用点击图片进行刷新
+        if (this.refreshMode == 1) {
+            this.mPtrFrame.setEnabled(false);
+        } else if (this.isCanRefresh) {
+            this.mPtrFrame.setEnabled(true);
+        }
     }
 
     /**
@@ -340,13 +350,20 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
      * 刷新动作，用于请求网络数据
      */
     public void refresh() {
-        mExceptView.setVisibility(View.GONE);
+        mExceptView.setVisibility(View.INVISIBLE);
         mPtrFrame.setEnabled(false);
         isRefresh = true;
         if (mRefreshLoadMoreListner != null) {
             mRefreshLoadMoreListner.onBeforeRefreshMask();
             mRefreshLoadMoreListner.onRefresh();
         }
+    }
+
+    /**
+     * 刷新动作，用于请求网络数据,涉及ui
+     */
+    public void auotRefresh() {
+        mPtrFrame.autoRefresh();
     }
 
     public void notifyDataSetChanged() {
@@ -465,13 +482,11 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
 
     @Override
     public void onUIRefreshPrepare(PtrFrameLayout frame) {
-
     }
 
     @Override
     public void onUIRefreshBegin(PtrFrameLayout frame) {
         isRefresh = true;
-        mExceptView.setVisibility(View.GONE);
         if (mRefreshLoadMoreListner != null) {
             mRefreshLoadMoreListner.onBeforeRefreshMask();
             mRefreshLoadMoreListner.onRefresh();
@@ -516,6 +531,42 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
         return recyclerView;
     }
 
+    public void setExceptionView(View errView, int errImgId, int errMsgId) {
+        if (errView != null) {
+            ViewGroup tmp = (ViewGroup) findViewById(R.id.vg_err);
+            tmp.removeAllViews();
+            errInnerView = errView;
+            exceptIv = (ImageView) errInnerView.findViewById(errImgId);
+            exceptTv = (TextView) errInnerView.findViewById(errMsgId);
+            tmp.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // 点击刷新
+                    if (!isRefresh) {
+                        // 点击图片刷新
+                        if (isCanRefresh) {
+                            // 点击图片刷新
+                            if (refreshMode != RefreshMode.PULL && isCanRefresh) {
+                                firstLoadingView(null);
+                            }
+                        }
+
+                    }
+                }
+            });
+            tmp.addView(errInnerView);
+        }
+    }
+
+    public void setExceptionView(View errView) {
+        setExceptionView(errView, R.id.iv_err_img, R.id.tv_err_msg);
+    }
+
+    public void setRefreshMode(int mode) {
+        refreshMode = mode;
+    }
+
     /**
      * 下拉刷新和自动加载监听
      */
@@ -550,5 +601,25 @@ public class GyRecycleView<T> extends LinearLayout implements PtrUIHandler {
          * 当所有数据全部展示时，不显示没有更多数据尾部布局提示
          */
         public static final int HIDDEN = 2;
+    }
+
+    /**
+     * 处于错误页或者无数据缺省页的刷新模式
+     */
+    public static class RefreshMode {
+        /**
+         * 头部下拉刷新
+         */
+        public static final int PULL = 0;
+
+        /**
+         * 点击缺省布局或者错误布局
+         */
+        public static final int CLICK = 1;
+
+        /**
+         * 以上两种都有
+         */
+        public static final int ALL = 2;
     }
 }
