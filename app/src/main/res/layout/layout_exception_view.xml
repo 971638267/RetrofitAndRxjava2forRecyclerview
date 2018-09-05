@@ -19,12 +19,4 @@
         android:text="我是通用的错误布局"
         android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/tv_err_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="点击图片刷新"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="12sp" />
-
 </LinearLayout>

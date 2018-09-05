@@ -14,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.gan.base.activity.ExlistviewLayoutDemoActivity;
 import com.gan.base.activity.GyRecycleviewActivity;
+import com.gan.base.activity.DataBindingActivity;
 import com.gan.base.activity.PhotoPickerDemoActivity;
 import com.gan.base.activity.RecycleviewActivity;
 import com.gan.base.activity.RecycleviewWithHeadActivity;
@@ -105,7 +107,9 @@ public class HomePager extends ContentBasePager {
         griditemtext[8] = "带有头布局的列表";
         griditemtext[9] = "另外一种下拉刷新控件";
         griditemtext[10] = "图片选择器";
-        for (int i = 11; i < 15; i++) {
+        griditemtext[11] = "下拉刷新库Mock数据测试";
+        griditemtext[12] = "databinding";
+        for (int i = 13; i < 15; i++) {
             griditemtext[i] = "功能" + (i + 1);
         }
 
@@ -160,6 +164,12 @@ public class HomePager extends ContentBasePager {
                         break;
                     case 10://
                         mActivity.startActivity(new Intent(mActivity, PhotoPickerDemoActivity.class));
+                        break;
+                    case 11://
+                        mActivity.startActivity(new Intent(mActivity, ExlistviewLayoutDemoActivity.class));
+                        break;
+                    case 12://
+                        mActivity.startActivity(new Intent(mActivity, DataBindingActivity.class));
                         break;
                     default:
                         break;
@@ -220,7 +230,7 @@ public class HomePager extends ContentBasePager {
 
     }
 
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     }

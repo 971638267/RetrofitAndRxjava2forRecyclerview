@@ -3,12 +3,14 @@ package com.gan.base.constant;
 
 import android.os.Environment;
 
+import com.gan.base.BuildConfig;
+
 public class Constant {
     //是否允许弹出toast
     public static final boolean TOAST = true;
     public static  boolean UPLOAD_VERSION =false ;
     //调试模式
-    public static boolean DEBUG = true;//调试模式开关
+    public static boolean DEBUG = BuildConfig.DEBUG;//调试模式开关
     // 缓存图片路径(imageLoder用)
 
     // 缓存图片路径(imageLoder用)

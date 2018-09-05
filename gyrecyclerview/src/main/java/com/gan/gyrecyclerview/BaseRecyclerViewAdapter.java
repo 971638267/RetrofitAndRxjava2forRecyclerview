@@ -7,22 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gan.gyrecyclerview.base.ViewHolder;
+import com.gan.gyrecyclerview.inter.IbaseAdapterHelper;
 
 import java.util.List;
 
 
-public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
+public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHolder> implements IbaseAdapterHelper<T>{
     protected Context mContext;
     protected int mLayoutId;
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
     protected OnItemClickListener mOnItemClickListener;
 
-    public CommonAdapter(Context context, int layoutId, List<T> datas) {
+    public BaseRecyclerViewAdapter(Context context, int layoutId, List<T> datas) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mLayoutId = layoutId;
         mDatas = datas;
+    }
+
+    @Override
+    public List<T> getData() {
+        return mDatas;
     }
 
     protected boolean isEnabled(int viewType) {
@@ -64,16 +70,17 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        convert(holder, mDatas.get(position), position);
+        doItem(holder, mDatas.get(position), position);
     }
 
-    protected abstract void convert(ViewHolder holder, T t, int position);
+    protected abstract void doItem(ViewHolder holder, T t, int position);
 
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
 
+    @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
@@ -87,9 +94,4 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
         }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
-
-        boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position);
-    }
 }

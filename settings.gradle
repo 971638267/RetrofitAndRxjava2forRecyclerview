@@ -1,1 +1,1 @@
-include ':app', ':myrecycleview', ':appdownloadlibrary', ':gyrecyclerview'
+include ':app', ':myrecycleview', ':appdownloadlibrary', ':gyrecyclerview', ':photopicker'

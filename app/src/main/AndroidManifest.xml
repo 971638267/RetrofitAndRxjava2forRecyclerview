@@ -45,6 +45,8 @@
         <activity android:name=".activity.GyRecycleviewActivity" />
         <activity android:name=".activity.PhotoPickerDemoActivity" />
         <activity android:name="base.gan.photopicker.PhotoPickerActivity" />
+        <activity android:name=".activity.ExlistviewLayoutDemoActivity" />
+        <activity android:name=".activity.DataBindingActivity" />
         <activity android:name=".activity.SplashActivity">
 
             <intent-filter>

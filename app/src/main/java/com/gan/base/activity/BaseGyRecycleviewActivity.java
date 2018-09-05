@@ -7,7 +7,7 @@ import com.gan.base.net.requestbean.BaseRequest4List;
 import com.gan.base.net.subscribers.RecycleviewSubscriber;
 import com.gan.base.net.subscribers.RecycleviewSubscriberOnNextListener;
 import com.gan.base.util.ToastUtil;
-import com.gan.gyrecyclerview.CommonAdapter;
+import com.gan.gyrecyclerview.BaseRecyclerViewAdapter;
 import com.gan.gyrecyclerview.GyRecycleView;
 import com.gan.gyrecyclerview.base.ViewHolder;
 
@@ -31,9 +31,9 @@ public abstract class BaseGyRecycleviewActivity<T> extends BaseActivity implemen
     GyRecycleView recycleView;
     private boolean isFirstIn = true;
     private int page = 1;
-    private int PAGESIZE = 10;
+    private int PAGESIZE = 20;
     private int oldPage = 1;
-    private CommonAdapter<T> mAdapter;
+    private BaseRecyclerViewAdapter<T> mAdapter;
     private RecycleviewSubscriberOnNextListener<List<T>> getTopMovieOnNext;
     public List<T> dataAllList = new ArrayList<T>();
     private RecycleviewSubscriber<List<T>> subscriber;
@@ -46,8 +46,8 @@ public abstract class BaseGyRecycleviewActivity<T> extends BaseActivity implemen
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recycleView.setLayoutManager(layoutManager);
         }
-
         recycleView.setAdapter(mAdapter);
+
         initNetListener();
     }
 
@@ -59,17 +59,17 @@ public abstract class BaseGyRecycleviewActivity<T> extends BaseActivity implemen
     /**
      * 初始化适配器
      */
-    public CommonAdapter<T> getRecyclerViewAdapter() {
-        return new CommonAdapter<T>(this, getItemLayoutId(), dataAllList) {
+    public BaseRecyclerViewAdapter<T> getRecyclerViewAdapter() {
+        return new BaseRecyclerViewAdapter<T>(this, getItemLayoutId(), dataAllList) {
             @Override
-            protected void convert(ViewHolder holder, T t, int position) {
+            protected void doItem(ViewHolder holder, T t, int position) {
                 doItemUI(holder, t, position);
             }
         };
     }
 
     public void freshItem() {
-        recycleView.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     protected abstract int getItemLayoutId();
@@ -139,20 +139,21 @@ public abstract class BaseGyRecycleviewActivity<T> extends BaseActivity implemen
             }
 
             @Override
-            public void onErr(int drawable, String msg) {
+            public void onErr(int drawable, final String msg) {
+
                 if (page == 1) {
-                    if (dataAllList.isEmpty()) {
-                        recycleView.setDateRefreshErr(drawable, msg);//显示错误面板
-                    } else {
-                        ToastUtil.ToastCenter(msg);//提示信息
-                        recycleView.stopRefresh();//停止刷新
-                        page = oldPage;//恢复当前页记录
-                    }
+                    page = oldPage;
+                    recycleView.setDateRefreshErr( msg, new GyRecycleView.NoDataCallBack() {
+                        @Override
+                        public void refreshNodata() {
+                            ToastUtil.ToastCenter(msg);//提示信息
+                        }
+                    });
                     return;
                 } else {
                     page--;//当前页恢复记录数据
                     ToastUtil.ToastCenter(msg);//提示错误
-                    recycleView.setLoadMoreCompleted();//停止加载
+                    recycleView.setDateLoadMoreErr();
                 }
             }
         };

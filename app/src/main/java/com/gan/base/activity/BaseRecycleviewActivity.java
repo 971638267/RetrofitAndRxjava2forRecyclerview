@@ -40,13 +40,13 @@ public abstract class BaseRecycleviewActivity<T> extends BaseActivity implements
 
     private void initView() {
         mAdapter = getRecyclerViewAdapter();
-        ;//初始化适配器
+        //初始化适配器
         recycleView.setRefreshLoadMoreListener(this);//下拉上拉加载更多监听
         if (!setRecyclerViewField()) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             recycleView.setLayoutManager(layoutManager);
         }
-        ;
+
         recycleView.setAdapter(mAdapter);
         initNetListener();
     }

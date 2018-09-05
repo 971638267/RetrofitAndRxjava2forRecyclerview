@@ -1,6 +1,7 @@
 package com.gan.base.pagers;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 
@@ -29,8 +30,8 @@ public class MessagePager extends BaseRecycleviewPager<MovieInfo> {
     public boolean setRecyclerViewField() {
         //设置布局管理
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        // GridLayoutManager layoutManager= new GridLayoutManager(mActivity, 2);
+        //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+         GridLayoutManager layoutManager= new GridLayoutManager(mActivity, 2);
         recycleView.setLayoutManager(layoutManager);
         return true;
     }

@@ -1,5 +1,6 @@
 package com.gan.base.activity;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.gan.base.util.StringFormatUtil;
 import com.gan.base.view.GyPullHeadView;
 import com.gan.gyrecyclerview.GyRecycleView;
 import com.gan.gyrecyclerview.base.ViewHolder;
+import com.gan.gyrecyclerview.wrapper.HeaderAndFooterWrapper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -25,9 +27,10 @@ public class GyRecycleviewActivity extends BaseGyRecycleviewActivity<MovieInfo> 
     public boolean setRecyclerViewField() {
         setTitle("另外一种控件的下拉刷新列表页");
         recycleView.setPullHeaderView(new GyPullHeadView(this));
-        recycleView.setFootNodataViewMode(GyRecycleView.NodataFootViewMode.OUT_VISIBLE);
+        recycleView.setFootNodataViewMode(HeaderAndFooterWrapper.NodataFootViewMode.OUT_VISIBLE);
         recycleView.addHeaderView(R.layout.item_recyclerview_head);
         recycleView.setRefreshMode(GyRecycleView.RefreshMode.PULL);
+
         //recycleView.getInnerRecyclerView();
         recycleView.setExceptionView(View.inflate(this,R.layout.layout_exception_view,null),R.id.iv,R.id.tv);
         //recycleView.setExceptionView(View.inflate(this,R.layout.layout_exception_view,null));
@@ -42,7 +45,8 @@ public class GyRecycleviewActivity extends BaseGyRecycleviewActivity<MovieInfo> 
 
             }
         });
-        return false;
+        recycleView.setLayoutManager(new GridLayoutManager(this,2));
+        return true;
     }
 
 

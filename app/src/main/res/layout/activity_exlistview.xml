@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.gan.gyrecyclerview.GyRecycleView
+        android:id="@+id/gy_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defalt_err_str="哎呀，又出错了，上拉重试"
+        app:defalt_loading_str="稍等，正在加载更多..."
+        app:defalt_nodata_str="亲，没有更多数据了哦">
+
+    </com.gan.gyrecyclerview.GyRecycleView>
+</LinearLayout>

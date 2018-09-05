@@ -26,4 +26,8 @@
     <string name="str_new_version_msg">发现您有新的版本未更新。</string>
     <string name="str_update_now">立即更新</string>
     <string name="str_tell_late">稍后再说</string>
+
+
+    <string name="movie_type">类型:</string>
+    <string name="movie_screo">评分:</string>
 </resources>

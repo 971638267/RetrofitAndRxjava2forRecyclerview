@@ -2,6 +2,9 @@
 <resources>
 
     <declare-styleable name="GyRecyclerview">
+        <attr name="defalt_err_str" format="reference|string" />
+        <attr name="defalt_nodata_str" format="reference|string" />
+        <attr name="defalt_loading_str" format="reference|string" />
         <attr name="defalt_err_icon" format="reference" />
         <attr name="defalt_nodata_icon" format="reference" />
     </declare-styleable>

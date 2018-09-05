@@ -1,0 +1,5 @@
+<resources>
+
+    <!-- Album相关 -->
+    <dimen name="albumitem_height_picker">80dp</dimen>
+</resources>
